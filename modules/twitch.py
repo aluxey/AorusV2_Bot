@@ -13,6 +13,7 @@ class Twitch(commands.Cog):
 
         print(f"🔍 DEBUG: Fetched streamers -> {streamers}")
 
+        # Verify the response
         if isinstance(streamers, str):  # Error message
             await ctx.send(streamers)
             return
