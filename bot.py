@@ -1,12 +1,12 @@
 import discord
-from discord.ext import commands
+import asyncio
 import os
+
+from discord.ext import commands
 from dotenv import load_dotenv
+from config import DISCORD_TOKEN
 
-# Charger les variables d'environnement
 load_dotenv()
-TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-
 # Définition des intents
 intents = discord.Intents.default()
 intents.message_content = True
@@ -18,10 +18,17 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f'✅ {bot.user} est en ligne !')
 
+async def load_modules():
+    await bot.load_extension("modules.twitch")
+
 @bot.command()
 async def hello(ctx):
     """Commande qui répond avec un message de bienvenue"""
     await ctx.send("👋 Salut, je suis ton bot !")
 
-# Lancer le bot
-bot.run(TOKEN)
+async def main():
+    await load_modules()
+    await bot.start(DISCORD_TOKEN)
+
+if __name__ == "__main__":
+    asyncio.run(main())
